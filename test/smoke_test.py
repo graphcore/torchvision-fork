@@ -10,6 +10,11 @@ from torchvision.models import resnet50, ResNet50_Weights
 
 SCRIPT_DIR = Path(__file__).parent
 
+import importlib
+torch_backend = os.getenv("TORCH_BACKEND")
+if torch_backend:
+    importlib.import_module(torch_backend)
+
 
 def smoke_test_torchvision() -> None:
     print(
@@ -59,6 +64,9 @@ def main() -> None:
     smoke_test_torchvision_resnet50_classify()
     if torch.cuda.is_available():
         smoke_test_torchvision_resnet50_classify("cuda")
+    torch_device = os.getenv("TORCH_DEVICE")
+    if torch_device:
+        smoke_test_torchvision_resnet50_classify(torch_device)
 
 
 if __name__ == "__main__":
