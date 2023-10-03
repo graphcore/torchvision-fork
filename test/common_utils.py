@@ -32,6 +32,7 @@ IN_OSS_CI = any(os.getenv(var) == "true" for var in ["CIRCLECI", "GITHUB_ACTIONS
 IN_RE_WORKER = os.environ.get("INSIDE_RE_WORKER") is not None
 IN_FBCODE = os.environ.get("IN_FBCODE_TORCHVISION") == "1"
 CUDA_NOT_AVAILABLE_MSG = "CUDA device not available"
+IPU_NOT_AVAILABLE_MSG = "IPU device not available"
 OSS_CI_GPU_NO_CUDA_MSG = "We're in an OSS GPU machine, and this test doesn't need cuda."
 
 
@@ -125,7 +126,7 @@ def disable_console_output():
 def cpu_and_gpu():
     import pytest  # noqa
 
-    return ("cpu", pytest.param("cuda", marks=pytest.mark.needs_cuda))
+    return ("cpu", pytest.param("cuda", marks=pytest.mark.needs_cuda), pytest.param("ipu", marks=pytest.mark.needs_ipu))
 
 
 def needs_cuda(test_func):
